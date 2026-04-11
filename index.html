@@ -918,7 +918,54 @@
     }
 
     function exportToExcel(clients) {
-      const rows = sortAndRecalculateOrders(clients).map((item) => ({
+      const getDayIndex = (day) => {
+        const normalizedDay = normalizeText(day)
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+
+        const cleanDay = normalizedDay.includes("-")
+          ? normalizedDay.split("-").slice(1).join("-").trim()
+          : normalizedDay;
+
+        const dayMap = {
+          lunes: 0,
+          martes: 1,
+          miercoles: 2,
+          jueves: 3,
+          viernes: 4,
+          sabado: 5,
+          domingo: 6
+        };
+
+        if (cleanDay in dayMap) return dayMap[cleanDay];
+        if (normalizedDay in dayMap) return dayMap[normalizedDay];
+
+        const directIndex = DAYS.findIndex((item) => {
+          const normalizedItem = item
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+          return normalizedItem === cleanDay || normalizedItem === normalizedDay;
+        });
+
+        return directIndex === -1 ? 999 : directIndex;
+      };
+
+      const exportClients = [...clients].sort((a, b) => {
+        const routeCompare = normalizeText(a.ruta).localeCompare(normalizeText(b.ruta), undefined, { numeric: true });
+        if (routeCompare !== 0) return routeCompare;
+
+        const dayCompare = getDayIndex(a.dia_visita) - getDayIndex(b.dia_visita);
+        if (dayCompare !== 0) return dayCompare;
+
+        const orderCompare = Number(a.orden || 0) - Number(b.orden || 0);
+        if (orderCompare !== 0) return orderCompare;
+
+        return normalizeText(a.nombre_negocio).localeCompare(normalizeText(b.nombre_negocio));
+      });
+
+      const rows = exportClients.map((item) => ({
         Codigo: item.codigo,
         Centro: item.centro,
         Agencia: item.agencia,
@@ -932,8 +979,113 @@
         Promotora: item.promotora
       }));
 
-      const worksheet = XLSX.utils.json_to_sheet(rows, { header: REQUIRED_EXPORT_COLUMNS });
+      const HEADER_LABELS = {
+        Codigo: "CODIGO SIMPLE",
+        Centro: "CENTRO",
+        Agencia: "AGENCIA ACTUAL",
+        Distrito: "DISTRITO",
+        Ruta: "RUTA ACTUAL",
+        Dia_visita: "DIA VISITA",
+        Orden: "ORDEN",
+        Nombre_Negocio: "NOMBRE NEGOCIO",
+        Direccion: "DIRECCION",
+        Clasificacion: "CLASIFICACION PDV",
+        Promotora: "NOMBRE PROMOTORA VISIBILIDAD"
+      };
+
+      const sheetData = [
+        REQUIRED_EXPORT_COLUMNS.map((key) => HEADER_LABELS[key] || String(key).toUpperCase()),
+        ...rows.map((row) => REQUIRED_EXPORT_COLUMNS.map((key) => row[key] ?? ""))
+      ];
+
+      const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
       const workbook = XLSX.utils.book_new();
+
+      const redColumns = new Set(["Codigo"]);
+      const centerColumns = new Set(["Codigo", "Centro", "Agencia", "Distrito", "Ruta", "Dia_visita", "Orden", "Clasificacion"]);
+      const borderColor = "B7C3CC";
+      const headerBlue = "B7D7E5";
+      const headerRed = "FF1A12";
+      const headerTextDark = "111827";
+      const headerTextLight = "FFFFFF";
+
+      const range = XLSX.utils.decode_range(
+        worksheet["!ref"] || `A1:${XLSX.utils.encode_cell({ r: 0, c: REQUIRED_EXPORT_COLUMNS.length - 1 })}`
+      );
+
+      const getTextLength = (value) => {
+        if (value == null) return 0;
+        return String(value)
+          .split(/\r?\n/)
+          .reduce((max, line) => Math.max(max, line.length), 0);
+      };
+
+      const makeBorder = (rgb) => ({
+        top: { style: "thin", color: { rgb } },
+        right: { style: "thin", color: { rgb } },
+        bottom: { style: "thin", color: { rgb } },
+        left: { style: "thin", color: { rgb } }
+      });
+
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const headerAddress = XLSX.utils.encode_cell({ r: 0, c: col });
+        const headerCell = worksheet[headerAddress];
+        const key = REQUIRED_EXPORT_COLUMNS[col] || "";
+        const isRed = redColumns.has(key);
+
+        if (headerCell) {
+          headerCell.s = {
+            font: {
+              bold: true,
+              color: { rgb: isRed ? headerTextLight : headerTextDark },
+              sz: 12,
+              name: "Arial"
+            },
+            fill: { fgColor: { rgb: isRed ? headerRed : headerBlue } },
+            alignment: {
+              horizontal: "center",
+              vertical: "center",
+              wrapText: true
+            },
+            border: makeBorder(borderColor)
+          };
+        }
+
+        for (let rowIndex = 1; rowIndex <= range.e.r; rowIndex++) {
+          const cellAddress = XLSX.utils.encode_cell({ r: rowIndex, c: col });
+          const cell = worksheet[cellAddress];
+          if (!cell) continue;
+
+          cell.s = {
+            font: {
+              color: { rgb: "1F2937" },
+              sz: 11,
+              name: "Arial"
+            },
+            fill: { fgColor: { rgb: rowIndex % 2 === 0 ? "FFFFFF" : "F8FAFC" } },
+            alignment: {
+              horizontal: centerColumns.has(key) ? "center" : "left",
+              vertical: "center",
+              wrapText: true
+            },
+            border: makeBorder("D5DEE5")
+          };
+        }
+      }
+
+      worksheet["!rows"] = [{ hpt: 34 }, ...rows.map(() => ({ hpt: 22 }))];
+      worksheet["!autofilter"] = { ref: worksheet["!ref"] };
+      worksheet["!cols"] = REQUIRED_EXPORT_COLUMNS.map((key) => {
+        const headerLength = getTextLength(HEADER_LABELS[key] || key);
+        const maxContentLength = rows.reduce((max, row) => Math.max(max, getTextLength(row[key])), 0);
+        const largest = Math.max(headerLength, maxContentLength);
+
+        if (key === "Direccion") return { wch: Math.min(Math.max(largest + 4, 20), 42) };
+        if (key === "Nombre_Negocio") return { wch: Math.min(Math.max(largest + 4, 18), 30) };
+        if (key === "Promotora") return { wch: Math.min(Math.max(largest + 4, 20), 28) };
+        return { wch: Math.min(Math.max(largest + 3, 12), 22) };
+      });
+
       XLSX.utils.book_append_sheet(workbook, worksheet, "EXELdatos");
       XLSX.writeFile(workbook, `EXELdatos_${new Date().toISOString().slice(0, 10)}.xlsx`);
     }
