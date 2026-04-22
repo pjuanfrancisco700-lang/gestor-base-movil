@@ -516,7 +516,7 @@
       <div>
         <div class="eyebrow">Gestión</div>
         <h1 class="title">Gestor de base móvil</h1>
-        <p class="subtitle">Gestión de datos.</p>
+        <p class="subtitle">Gestión de datos conectada a Google Sheets.</p>
       </div>
       <button class="icon-btn" id="openSettingsBtn" aria-label="Abrir configuración">⚙️</button>
     </header>
@@ -530,7 +530,6 @@
             <div class="section-icon blue">＋</div>
             <div>
               <h2 class="section-title">Agregar cliente</h2>
-              
             </div>
           </div>
 
@@ -546,21 +545,21 @@
                 <input class="input" id="ruta" name="ruta" placeholder="Ej. 17029" />
               </div>
               <div class="field">
-                <label for="dia_visita">📅 Día de visita</label>
+                <label for="dia_visita">📅 Día visita</label>
                 <select class="select" id="dia_visita" name="dia_visita">
-                  <option>Lunes</option>
-                  <option>Martes</option>
-                  <option>Miércoles</option>
-                  <option>Jueves</option>
-                  <option>Viernes</option>
-                  <option>Sábado</option>
-                  <option>Domingo</option>
+                  <option value="1-Lunes">1-Lunes</option>
+                  <option value="2-Martes">2-Martes</option>
+                  <option value="3-Miércoles">3-Miércoles</option>
+                  <option value="4-Jueves">4-Jueves</option>
+                  <option value="5-Viernes">5-Viernes</option>
+                  <option value="6-Sábado">6-Sábado</option>
+                  <option value="7-Domingo">7-Domingo</option>
                 </select>
               </div>
             </div>
 
             <div class="field">
-              <label for="nombre_negocio">🏪 Nombre_Negocio</label>
+              <label for="nombre_negocio">🏪 Nombre Negocio</label>
               <input class="input" id="nombre_negocio" name="nombre_negocio" placeholder="Ej. SUPER 24 SANARATE CENTRO" />
             </div>
 
@@ -570,7 +569,7 @@
             </div>
 
             <div class="field">
-              <label for="clasificacion">🏷 Clasificación</label>
+              <label for="clasificacion">🏷 Clasificación PDV</label>
               <input class="input" id="clasificacion" name="clasificacion" placeholder="Ej. A" />
             </div>
 
@@ -589,7 +588,6 @@
             <div class="section-icon green">👥</div>
             <div>
               <h2 class="section-title">Clientes</h2>
-              
             </div>
           </div>
 
@@ -611,7 +609,6 @@
             <div class="section-icon violet">📊</div>
             <div>
               <h2 class="section-title">Resumen</h2>
-              
             </div>
           </div>
 
@@ -651,7 +648,6 @@
       <div class="modal-head">
         <div>
           <h3 class="modal-title">Configuración</h3>
-          
         </div>
         <button class="close-btn" data-close="settingsModal">Cerrar</button>
       </div>
@@ -661,16 +657,7 @@
           <div class="option-icon blue">👤</div>
           <div class="option-body">
             <div class="option-title">Usuario</div>
-            <p class="option-desc">Datos por defecto.</p>
-          </div>
-          <div class="arrow">›</div>
-        </button>
-
-        <button class="option-card" id="openDatabaseModalBtn">
-          <div class="option-icon green">🗂</div>
-          <div class="option-body">
-            <div class="option-title">Base de datos</div>
-            <p class="option-desc">Cargar TXT.</p>
+            <p class="option-desc">Datos por defecto conectados a Sheets.</p>
           </div>
           <div class="arrow">›</div>
         </button>
@@ -683,7 +670,6 @@
       <div class="modal-head">
         <div>
           <h3 class="modal-title">Usuario</h3>
-          
         </div>
         <button class="close-btn" data-close="userModal">Cerrar</button>
       </div>
@@ -710,31 +696,11 @@
     </div>
   </div>
 
-  <div class="modal" id="databaseModal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <div>
-          <h3 class="modal-title">Base de datos</h3>
-          <p class="modal-subtitle">Importar archivo TXT</p>
-        </div>
-        <button class="close-btn" data-close="databaseModal">Cerrar</button>
-      </div>
-
-      <label class="upload-box" for="txtFileInput">
-        <div class="upload-icon">📤</div>
-        <strong>Seleccionar archivo TXT</strong>
-        <p>Importar base.</p>
-      </label>
-      <input id="txtFileInput" type="file" accept=".txt,text/plain" hidden />
-    </div>
-  </div>
-
   <div class="modal" id="editModal">
     <div class="modal-box">
       <div class="modal-head">
         <div>
           <h3 class="modal-title">Editar cliente</h3>
-          
         </div>
         <button class="close-btn" data-close="editModal">Cerrar</button>
       </div>
@@ -751,20 +717,20 @@
             <input class="input" id="edit_ruta" />
           </div>
           <div class="field">
-            <label for="edit_dia_visita">📅 Día de visita</label>
+            <label for="edit_dia_visita">📅 Día visita</label>
             <select class="select" id="edit_dia_visita">
-              <option>Lunes</option>
-              <option>Martes</option>
-              <option>Miércoles</option>
-              <option>Jueves</option>
-              <option>Viernes</option>
-              <option>Sábado</option>
-              <option>Domingo</option>
+              <option value="1-Lunes">1-Lunes</option>
+              <option value="2-Martes">2-Martes</option>
+              <option value="3-Miércoles">3-Miércoles</option>
+              <option value="4-Jueves">4-Jueves</option>
+              <option value="5-Viernes">5-Viernes</option>
+              <option value="6-Sábado">6-Sábado</option>
+              <option value="7-Domingo">7-Domingo</option>
             </select>
           </div>
         </div>
         <div class="field">
-          <label for="edit_nombre_negocio">🏪 Nombre_Negocio</label>
+          <label for="edit_nombre_negocio">🏪 Nombre Negocio</label>
           <input class="input" id="edit_nombre_negocio" />
         </div>
         <div class="field">
@@ -772,7 +738,7 @@
           <textarea class="textarea" id="edit_direccion"></textarea>
         </div>
         <div class="field">
-          <label for="edit_clasificacion">🏷 Clasificación</label>
+          <label for="edit_clasificacion">🏷 Clasificación PDV</label>
           <input class="input" id="edit_clasificacion" />
         </div>
         <div class="grid-2">
@@ -784,12 +750,22 @@
   </div>
 
   <script>
-    const DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-    const STORAGE_KEYS = {
-      user: "app_user_defaults_v1",
-      clients: "app_clients_v1",
-      importedAt: "app_imported_at_v1"
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwptPC80lyu_i6nM3eDqavkLrnVRQNGCKWmfecyqL-5mJAuE4DkR_dETXRIQT-Uc7o/exec";
+    const CACHE_KEYS = {
+      clients: "gestor_base_cache_clients_v1",
+      userDefaults: "gestor_base_cache_user_defaults_v1",
+      lastSync: "gestor_base_cache_last_sync_v1"
     };
+
+    const DAYS = [
+      "1-Lunes",
+      "2-Martes",
+      "3-Miércoles",
+      "4-Jueves",
+      "5-Viernes",
+      "6-Sábado",
+      "7-Domingo"
+    ];
 
     const DEFAULT_USER = {
       centro: "",
@@ -814,10 +790,11 @@
 
     let state = {
       activeTab: "registro",
-      userDefaults: loadUserDefaults(),
-      clients: loadClients(),
+      userDefaults: { ...DEFAULT_USER },
+      clients: [],
       editId: null,
-      clientSearch: ""
+      clientSearch: "",
+      loading: false
     };
 
     const toast = document.getElementById("toast");
@@ -827,6 +804,9 @@
     const routeList = document.getElementById("routeList");
     const totalClientesEl = document.getElementById("totalClientes");
     const nuevosMesEl = document.getElementById("nuevosMes");
+    const addClientForm = document.getElementById("addClientForm");
+    const editForm = document.getElementById("editForm");
+    const exportExcelBtn = document.getElementById("exportExcelBtn");
 
     function normalizeText(value) {
       return String(value ?? "").trim();
@@ -836,22 +816,26 @@
       return `${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
     }
 
+    function normalizeBoolean(value) {
+      return value === true || String(value).toLowerCase() === "true" || String(value) === "1";
+    }
+
     function normalizeClient(raw) {
       return {
         id: raw.id || makeId(),
-        codigo: normalizeText(raw.codigo || raw.Codigo),
-        centro: normalizeText(raw.centro || raw.Centro),
-        agencia: normalizeText(raw.agencia || raw.Agencia),
-        distrito: normalizeText(raw.distrito || raw.Distrito),
-        ruta: normalizeText(raw.ruta || raw.Ruta),
-        dia_visita: normalizeText(raw.dia_visita || raw.Dia_visita),
-        orden: Number(raw.orden || raw.Orden || 0),
-        nombre_negocio: normalizeText(raw.nombre_negocio || raw.Nombre_Negocio),
-        direccion: normalizeText(raw.direccion || raw.Direccion),
-        clasificacion: normalizeText(raw.clasificacion || raw.Clasificacion),
-        promotora: normalizeText(raw.promotora || raw.Promotora),
+        codigo: normalizeText(raw.codigo || raw["Codigo Simple"] || raw.Codigo),
+        centro: normalizeText(raw.centro || raw["Centro"] || raw.Centro),
+        agencia: normalizeText(raw.agencia || raw["Agencia Actual"] || raw.Agencia),
+        distrito: normalizeText(raw.distrito || raw["Distrito"] || raw.Distrito),
+        ruta: normalizeText(raw.ruta || raw["Ruta Actual"] || raw.Ruta),
+        dia_visita: normalizeText(raw.dia_visita || raw["Dia visita"] || raw.Dia_visita),
+        orden: Number(raw.orden || raw["Orden"] || raw.Orden || 0),
+        nombre_negocio: normalizeText(raw.nombre_negocio || raw["Nombre Negocio"] || raw.Nombre_Negocio),
+        direccion: normalizeText(raw.direccion || raw["Direccion"] || raw.Direccion),
+        clasificacion: normalizeText(raw.clasificacion || raw["Clasificacion PDV"] || raw.Clasificacion),
+        promotora: normalizeText(raw.promotora || raw["Nombre promotora Visibilidad"] || raw.Promotora),
         createdAt: raw.createdAt || new Date().toISOString(),
-        isNew: Boolean(raw.isNew)
+        isNew: normalizeBoolean(raw.isNew)
       };
     }
 
@@ -883,39 +867,289 @@
       return result;
     }
 
-    function parseTxtDatabase(content) {
-      const lines = content
-        .split(/\r?\n/)
-        .map((line) => line.trim())
-        .filter(Boolean);
+    function saveCache() {
+      try {
+        localStorage.setItem(CACHE_KEYS.clients, JSON.stringify(state.clients));
+        localStorage.setItem(CACHE_KEYS.userDefaults, JSON.stringify(state.userDefaults));
+        localStorage.setItem(CACHE_KEYS.lastSync, new Date().toISOString());
+      } catch (error) {
+        console.warn("No se pudo guardar caché local", error);
+      }
+    }
 
-      const parsed = [];
+    function loadCache() {
+      try {
+        const cachedClientsRaw = localStorage.getItem(CACHE_KEYS.clients);
+        const cachedUserRaw = localStorage.getItem(CACHE_KEYS.userDefaults);
 
-      for (const line of lines) {
-        const parts = line.split("|").map((p) => p.trim());
-        if (parts.length !== 11) continue;
+        const cachedClients = cachedClientsRaw ? JSON.parse(cachedClientsRaw) : [];
+        const cachedUserDefaults = cachedUserRaw ? JSON.parse(cachedUserRaw) : null;
 
-        const [Codigo, Centro, Agencia, Distrito, Ruta, Dia_visita, Orden, Nombre_Negocio, Direccion, Clasificacion, Promotora] = parts;
-        if (Codigo.toLowerCase() === "codigo") continue;
+        if (Array.isArray(cachedClients) && cachedClients.length) {
+          state.clients = sortAndRecalculateOrders(cachedClients.map(normalizeClient));
+        }
 
-        parsed.push(normalizeClient({
-          Codigo,
-          Centro,
-          Agencia,
-          Distrito,
-          Ruta,
-          Dia_visita,
-          Orden,
-          Nombre_Negocio,
-          Direccion,
-          Clasificacion,
-          Promotora,
-          isNew: false
-        }));
+        if (cachedUserDefaults && typeof cachedUserDefaults === "object") {
+          state.userDefaults = { ...DEFAULT_USER, ...cachedUserDefaults };
+        }
+
+        return Boolean(
+          (Array.isArray(cachedClients) && cachedClients.length) ||
+          (cachedUserDefaults && typeof cachedUserDefaults === "object")
+        );
+      } catch (error) {
+        console.warn("No se pudo leer caché local", error);
+        return false;
+      }
+    }
+
+    async function apiGet(action = "list") {
+      if (!APP_SCRIPT_URL || APP_SCRIPT_URL.includes("PEGA_AQUI")) {
+        throw new Error("Falta pegar la URL del Apps Script");
       }
 
-      return sortAndRecalculateOrders(parsed);
+      const url = `${APP_SCRIPT_URL}?action=${encodeURIComponent(action)}`;
+      const response = await fetch(url, { method: "GET" });
+      if (!response.ok) throw new Error("No se pudo leer Google Sheets");
+      const json = await response.json();
+      if (!json.ok) throw new Error(json.message || "Error de lectura");
+      return json.data;
     }
+
+    async function apiPost(payload) {
+      if (!APP_SCRIPT_URL || APP_SCRIPT_URL.includes("PEGA_AQUI")) {
+        throw new Error("Falta pegar la URL del Apps Script");
+      }
+
+      const response = await fetch(APP_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error("No se pudo guardar en Google Sheets");
+      const json = await response.json();
+      if (!json.ok) throw new Error(json.message || "Error al guardar");
+      return json.data;
+    }
+
+    async function loadInitialData() {
+      const hasCache = loadCache();
+
+      if (hasCache) {
+        renderAll(false);
+        const lastSync = localStorage.getItem(CACHE_KEYS.lastSync);
+        if (lastSync) {
+          showToast(`Cargado desde caché local`);
+        }
+      }
+
+      try {
+        setLoading(true, hasCache ? "Sincronizando con Sheets..." : "Conectando con Sheets...");
+        const [clients, userDefaults] = await Promise.all([
+          apiGet("list"),
+          apiGet("getuserdefaults")
+        ]);
+
+        state.clients = sortAndRecalculateOrders((clients || []).map(normalizeClient));
+        state.userDefaults = { ...DEFAULT_USER, ...(userDefaults || {}) };
+        saveCache();
+
+        renderAll(false);
+        showToast(`Base conectada: ${state.clients.length}`);
+      } catch (error) {
+        console.error(error);
+        renderAll(false);
+        showToast(hasCache ? "Mostrando datos guardados localmente" : (error.message || "No se pudo conectar con Sheets"));
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function setLoading(isLoading, message = "Procesando...") {
+      state.loading = isLoading;
+      addClientForm.querySelectorAll("input, select, textarea, button").forEach(el => el.disabled = isLoading);
+      editForm.querySelectorAll("input, select, textarea, button").forEach(el => el.disabled = isLoading);
+      exportExcelBtn.disabled = isLoading;
+      if (isLoading) {
+        clientSearchInfo.textContent = message;
+      }
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add("show");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("show");
+    }
+
+    function switchTab(tab) {
+      state.activeTab = tab;
+      document.querySelectorAll(".screen").forEach(el => el.classList.remove("active"));
+      document.getElementById(`screen-${tab}`).classList.add("active");
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
+    }
+
+    function getFilteredClients() {
+      const term = normalizeText(state.clientSearch).toLowerCase();
+      if (!term) return state.clients;
+
+      return state.clients.filter(client => {
+        const nombre = normalizeText(client.nombre_negocio).toLowerCase();
+        const codigo = normalizeText(client.codigo).toLowerCase();
+        const dia = normalizeText(client.dia_visita).toLowerCase();
+        const ruta = normalizeText(client.ruta).toLowerCase();
+        return nombre.includes(term) || codigo.includes(term) || dia.includes(term) || ruta.includes(term);
+      });
+    }
+
+    function renderClients() {
+      if (!state.clients.length) {
+        clientSearchInfo.textContent = state.loading ? "Conectando..." : "Sin clientes registrados";
+        clientList.innerHTML = `<div class="info-box" style="margin:0;">${state.loading ? "Cargando datos desde Google Sheets..." : "Sin clientes."}</div>`;
+        return;
+      }
+
+      const filteredClients = getFilteredClients();
+      const term = normalizeText(state.clientSearch);
+
+      if (term) {
+        clientSearchInfo.textContent = filteredClients.length
+          ? `${filteredClients.length} resultado${filteredClients.length === 1 ? "" : "s"} para "${term}"`
+          : `Sin resultados para "${term}"`;
+      } else {
+        clientSearchInfo.textContent = `${state.clients.length} cliente${state.clients.length === 1 ? "" : "s"} en total`;
+      }
+
+      if (!filteredClients.length) {
+        clientList.innerHTML = `<div class="info-box" style="margin:0;">No se encontraron clientes.</div>`;
+        return;
+      }
+
+      clientList.innerHTML = filteredClients.map(client => `
+        <div class="client-item">
+          <div class="pill-row">
+            <span class="pill">Ruta ${escapeHtml(client.ruta)}</span>
+            <span class="pill">Orden ${client.orden}</span>
+            <span class="pill">${escapeHtml(client.dia_visita)}</span>
+          </div>
+          <h3 class="client-name">${escapeHtml(client.nombre_negocio)}</h3>
+          <p class="client-meta">Código: ${escapeHtml(client.codigo)} · Centro: ${escapeHtml(client.centro)} · Agencia: ${escapeHtml(client.agencia)}</p>
+          <p class="client-address">${escapeHtml(client.direccion)}</p>
+          <p class="client-class">Clasificación: ${escapeHtml(client.clasificacion)} · Promotora: ${escapeHtml(client.promotora)}</p>
+          <div class="client-actions">
+            <button class="btn btn-secondary" onclick="openEditClient('${client.id}')">✏️ Editar</button>
+            <button class="btn btn-danger" onclick="deleteClient('${client.id}')">🗑 Borrar</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderSummary() {
+      const totalClientes = state.clients.length;
+      const porRutaMap = new Map();
+      const now = new Date();
+      const month = now.getMonth();
+      const year = now.getFullYear();
+      let nuevosMes = 0;
+
+      state.clients.forEach(client => {
+        const ruta = client.ruta || "Sin ruta";
+        porRutaMap.set(ruta, (porRutaMap.get(ruta) || 0) + 1);
+
+        if (client.createdAt) {
+          const d = new Date(client.createdAt);
+          if (d.getMonth() === month && d.getFullYear() === year && client.isNew) nuevosMes += 1;
+        }
+      });
+
+      totalClientesEl.textContent = totalClientes;
+      nuevosMesEl.textContent = nuevosMes;
+
+      const porRuta = Array.from(porRutaMap.entries()).sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true }));
+      routeList.innerHTML = porRuta.length
+        ? porRuta.map(([ruta, total]) => `<div class="route-item"><span>Ruta ${escapeHtml(ruta)}</span><strong>${total}</strong></div>`).join("")
+        : `<p class="client-meta" style="margin:0;">Sin datos.</p>`;
+    }
+
+    function renderUserDefaults() {
+      document.getElementById("user_centro").value = state.userDefaults.centro || "";
+      document.getElementById("user_agencia").value = state.userDefaults.agencia || "";
+      document.getElementById("user_distrito").value = state.userDefaults.distrito || "";
+      document.getElementById("user_promotora").value = state.userDefaults.promotora || "";
+    }
+
+    function renderAll(repaint = true) {
+      renderClients();
+      renderSummary();
+      renderUserDefaults();
+      if (repaint) renderClients();
+    }
+
+    function validateClientForm(data) {
+      if (!normalizeText(data.codigo)) return "Ingresa código";
+      if (!normalizeText(data.ruta)) return "Ingresa ruta";
+      if (!normalizeText(data.dia_visita)) return "Selecciona un día";
+      if (!normalizeText(data.nombre_negocio)) return "Ingresa negocio";
+      if (!normalizeText(data.direccion)) return "Ingresa dirección";
+      if (!normalizeText(data.clasificacion)) return "Ingresa clasificación";
+      return "";
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function openEditClient(id) {
+      const client = state.clients.find(item => item.id === id);
+      if (!client) return;
+      state.editId = id;
+      document.getElementById("edit_id").value = client.id;
+      document.getElementById("edit_codigo").value = client.codigo;
+      document.getElementById("edit_ruta").value = client.ruta;
+      document.getElementById("edit_dia_visita").value = client.dia_visita;
+      document.getElementById("edit_nombre_negocio").value = client.nombre_negocio;
+      document.getElementById("edit_direccion").value = client.direccion;
+      document.getElementById("edit_clasificacion").value = client.clasificacion;
+      openModal("editModal");
+    }
+    window.openEditClient = openEditClient;
+
+    async function deleteClient(id) {
+      const confirmado = window.confirm("¿Estás seguro que deseas borrar este cliente?");
+      if (!confirmado) return;
+
+      try {
+        setLoading(true, "Eliminando...");
+        const clients = await apiPost({ action: "delete", id });
+        state.clients = sortAndRecalculateOrders((clients || []).map(normalizeClient));
+        saveCache();
+        if (state.editId === id) closeModal("editModal");
+        renderAll(false);
+        showToast("Cliente eliminado");
+      } catch (error) {
+        console.error(error);
+        showToast(error.message || "No se pudo eliminar");
+      } finally {
+        setLoading(false);
+      }
+    }
+    window.deleteClient = deleteClient;
 
     function exportToExcel(clients) {
       const getDayIndex = (day) => {
@@ -940,16 +1174,7 @@
 
         if (cleanDay in dayMap) return dayMap[cleanDay];
         if (normalizedDay in dayMap) return dayMap[normalizedDay];
-
-        const directIndex = DAYS.findIndex((item) => {
-          const normalizedItem = item
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
-          return normalizedItem === cleanDay || normalizedItem === normalizedDay;
-        });
-
-        return directIndex === -1 ? 999 : directIndex;
+        return 999;
       };
 
       const exportClients = [...clients].sort((a, b) => {
@@ -1090,262 +1315,70 @@
       XLSX.writeFile(workbook, `EXELdatos_${new Date().toISOString().slice(0, 10)}.xlsx`);
     }
 
-    function loadUserDefaults() {
-      try {
-        return { ...DEFAULT_USER, ...(JSON.parse(localStorage.getItem(STORAGE_KEYS.user)) || {}) };
-      } catch {
-        return { ...DEFAULT_USER };
-      }
-    }
-
-    function loadClients() {
-      try {
-        const raw = JSON.parse(localStorage.getItem(STORAGE_KEYS.clients)) || [];
-        return sortAndRecalculateOrders(raw.map(normalizeClient));
-      } catch {
-        return [];
-      }
-    }
-
-    function saveUserDefaults() {
-      localStorage.setItem(STORAGE_KEYS.user, JSON.stringify(state.userDefaults));
-    }
-
-    function saveClients() {
-      localStorage.setItem(STORAGE_KEYS.clients, JSON.stringify(sortAndRecalculateOrders(state.clients)));
-    }
-
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
-      clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2400);
-    }
-
-    function openModal(id) {
-      document.getElementById(id).classList.add("show");
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove("show");
-    }
-
-    function switchTab(tab) {
-      state.activeTab = tab;
-      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-      document.getElementById(`screen-${tab}`).classList.add('active');
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
-    }
-
-    function getFilteredClients() {
-      const term = normalizeText(state.clientSearch).toLowerCase();
-      if (!term) return state.clients;
-
-      return state.clients.filter(client => {
-        const nombre = normalizeText(client.nombre_negocio).toLowerCase();
-        const codigo = normalizeText(client.codigo).toLowerCase();
-        const dia = normalizeText(client.dia_visita).toLowerCase();
-        return nombre.includes(term) || codigo.includes(term) || dia.includes(term);
-      });
-    }
-
-    function renderClients() {
-      if (!state.clients.length) {
-        clientSearchInfo.textContent = 'Sin clientes registrados';
-        clientList.innerHTML = `<div class="info-box" style="margin:0;">Sin clientes.</div>`;
-        return;
-      }
-
-      const filteredClients = getFilteredClients();
-      const term = normalizeText(state.clientSearch);
-
-      if (term) {
-        clientSearchInfo.textContent = filteredClients.length
-          ? `${filteredClients.length} resultado${filteredClients.length === 1 ? '' : 's'} para "${term}"`
-          : `Sin resultados para "${term}"`;
-      } else {
-        clientSearchInfo.textContent = `${state.clients.length} cliente${state.clients.length === 1 ? '' : 's'} en total`;
-      }
-
-      if (!filteredClients.length) {
-        clientList.innerHTML = `<div class="info-box" style="margin:0;">No se encontraron clientes.</div>`;
-        return;
-      }
-
-      clientList.innerHTML = filteredClients.map(client => `
-        <div class="client-item">
-          <div class="pill-row">
-            <span class="pill">Ruta ${escapeHtml(client.ruta)}</span>
-            <span class="pill">Orden ${client.orden}</span>
-          </div>
-          <h3 class="client-name">${escapeHtml(client.nombre_negocio)}</h3>
-          <p class="client-meta">Código: ${escapeHtml(client.codigo)} · Día: ${escapeHtml(client.dia_visita)}</p>
-          <p class="client-address">${escapeHtml(client.direccion)}</p>
-          <p class="client-class">Clasificación: ${escapeHtml(client.clasificacion)}</p>
-          <div class="client-actions">
-            <button class="btn btn-secondary" onclick="openEditClient('${client.id}')">✏️ Editar</button>
-            <button class="btn btn-danger" onclick="deleteClient('${client.id}')">🗑 Borrar</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderSummary() {
-      const totalClientes = state.clients.length;
-      const porRutaMap = new Map();
-      const now = new Date();
-      const month = now.getMonth();
-      const year = now.getFullYear();
-      let nuevosMes = 0;
-
-      state.clients.forEach(client => {
-        const ruta = client.ruta || 'Sin ruta';
-        porRutaMap.set(ruta, (porRutaMap.get(ruta) || 0) + 1);
-
-        if (client.createdAt) {
-          const d = new Date(client.createdAt);
-          if (d.getMonth() === month && d.getFullYear() === year && client.isNew) nuevosMes += 1;
-        }
-      });
-
-      totalClientesEl.textContent = totalClientes;
-      nuevosMesEl.textContent = nuevosMes;
-
-      const porRuta = Array.from(porRutaMap.entries()).sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true }));
-      routeList.innerHTML = porRuta.length
-        ? porRuta.map(([ruta, total]) => `<div class="route-item"><span>Ruta ${escapeHtml(ruta)}</span><strong>${total}</strong></div>`).join('')
-        : `<p class="client-meta" style="margin:0;">Sin datos.</p>`;
-    }
-
-    function renderUserDefaults() {
-      document.getElementById('user_centro').value = state.userDefaults.centro || '';
-      document.getElementById('user_agencia').value = state.userDefaults.agencia || '';
-      document.getElementById('user_distrito').value = state.userDefaults.distrito || '';
-      document.getElementById('user_promotora').value = state.userDefaults.promotora || '';
-    }
-
-    function renderAll() {
-      saveClients();
-      renderClients();
-      renderSummary();
-      renderUserDefaults();
-    }
-
-    function validateClientForm(data) {
-      if (!normalizeText(data.codigo)) return 'Ingresa código';
-      if (!normalizeText(data.ruta)) return 'Ingresa ruta';
-      if (!normalizeText(data.dia_visita)) return 'Selecciona un día';
-      if (!normalizeText(data.nombre_negocio)) return 'Ingresa negocio';
-      if (!normalizeText(data.direccion)) return 'Ingresa dirección';
-      if (!normalizeText(data.clasificacion)) return 'Ingresa clasificación';
-      return '';
-    }
-
-    function escapeHtml(str) {
-      return String(str ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function openEditClient(id) {
-      const client = state.clients.find(item => item.id === id);
-      if (!client) return;
-      state.editId = id;
-      document.getElementById('edit_id').value = client.id;
-      document.getElementById('edit_codigo').value = client.codigo;
-      document.getElementById('edit_ruta').value = client.ruta;
-      document.getElementById('edit_dia_visita').value = client.dia_visita;
-      document.getElementById('edit_nombre_negocio').value = client.nombre_negocio;
-      document.getElementById('edit_direccion').value = client.direccion;
-      document.getElementById('edit_clasificacion').value = client.clasificacion;
-      openModal('editModal');
-    }
-    window.openEditClient = openEditClient;
-
-    function deleteClient(id) {
-      state.clients = sortAndRecalculateOrders(state.clients.filter(item => item.id !== id));
-      if (state.editId === id) closeModal('editModal');
-      renderAll();
-      showToast('Cliente eliminado');
-    }
-    window.deleteClient = deleteClient;
-
-    document.getElementById('openSettingsBtn').addEventListener('click', () => openModal('settingsModal'));
-    document.getElementById('openUserModalBtn').addEventListener('click', () => {
-      closeModal('settingsModal');
-      openModal('userModal');
-    });
-    document.getElementById('openDatabaseModalBtn').addEventListener('click', () => {
-      closeModal('settingsModal');
-      openModal('databaseModal');
+    document.getElementById("openSettingsBtn").addEventListener("click", () => openModal("settingsModal"));
+    document.getElementById("openUserModalBtn").addEventListener("click", () => {
+      closeModal("settingsModal");
+      openModal("userModal");
     });
 
-    document.querySelectorAll('[data-close]').forEach(btn => {
-      btn.addEventListener('click', () => closeModal(btn.dataset.close));
+    document.querySelectorAll("[data-close]").forEach(btn => {
+      btn.addEventListener("click", () => closeModal(btn.dataset.close));
     });
 
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.remove('show');
+    document.querySelectorAll(".modal").forEach(modal => {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.remove("show");
       });
     });
 
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
     });
 
-    clientSearchInput.addEventListener('input', (e) => {
+    clientSearchInput.addEventListener("input", (e) => {
       state.clientSearch = e.target.value;
       renderClients();
     });
 
-    document.getElementById('userForm').addEventListener('submit', (e) => {
+    document.getElementById("userForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      state.userDefaults = {
-        centro: normalizeText(document.getElementById('user_centro').value),
-        agencia: normalizeText(document.getElementById('user_agencia').value),
-        distrito: normalizeText(document.getElementById('user_distrito').value),
-        promotora: normalizeText(document.getElementById('user_promotora').value)
+
+      const userDefaults = {
+        centro: normalizeText(document.getElementById("user_centro").value),
+        agencia: normalizeText(document.getElementById("user_agencia").value),
+        distrito: normalizeText(document.getElementById("user_distrito").value),
+        promotora: normalizeText(document.getElementById("user_promotora").value)
       };
-      saveUserDefaults();
-      closeModal('userModal');
-      showToast('Usuario guardado');
+
+      try {
+        setLoading(true, "Guardando usuario...");
+        const saved = await apiPost({
+          action: "saveuserdefaults",
+          userDefaults
+        });
+        state.userDefaults = { ...DEFAULT_USER, ...(saved || userDefaults) };
+        saveCache();
+        renderUserDefaults();
+        closeModal("userModal");
+        showToast("Usuario guardado");
+      } catch (error) {
+        console.error(error);
+        showToast(error.message || "No se pudo guardar usuario");
+      } finally {
+        setLoading(false);
+      }
     });
 
-    document.getElementById('txtFileInput').addEventListener('change', (e) => {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const content = String(reader.result || '');
-          state.clients = parseTxtDatabase(content);
-          localStorage.setItem(STORAGE_KEYS.importedAt, new Date().toISOString());
-          renderAll();
-          closeModal('databaseModal');
-          showToast(`Base cargada: ${state.clients.length}`);
-          e.target.value = '';
-        } catch {
-          showToast('Error al leer TXT');
-        }
-      };
-      reader.readAsText(file, 'utf-8');
-    });
-
-    document.getElementById('addClientForm').addEventListener('submit', (e) => {
+    document.getElementById("addClientForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const data = {
-        codigo: document.getElementById('codigo').value,
-        ruta: document.getElementById('ruta').value,
-        dia_visita: document.getElementById('dia_visita').value,
-        nombre_negocio: document.getElementById('nombre_negocio').value,
-        direccion: document.getElementById('direccion').value,
-        clasificacion: document.getElementById('clasificacion').value
+        codigo: document.getElementById("codigo").value,
+        ruta: document.getElementById("ruta").value,
+        dia_visita: document.getElementById("dia_visita").value,
+        nombre_negocio: document.getElementById("nombre_negocio").value,
+        direccion: document.getElementById("direccion").value,
+        clasificacion: document.getElementById("clasificacion").value
       };
 
       const error = validateClientForm(data);
@@ -1354,7 +1387,7 @@
         return;
       }
 
-      const newClient = normalizeClient({
+      const newClient = {
         codigo: data.codigo,
         centro: state.userDefaults.centro,
         agencia: state.userDefaults.agencia,
@@ -1365,28 +1398,41 @@
         direccion: data.direccion,
         clasificacion: data.clasificacion,
         promotora: state.userDefaults.promotora,
-        orden: Number.MAX_SAFE_INTEGER,
-        createdAt: new Date().toISOString(),
-        isNew: true
-      });
+        orden: Number.MAX_SAFE_INTEGER
+      };
 
-      state.clients = sortAndRecalculateOrders([...state.clients, newClient]);
-      renderAll();
-      e.target.reset();
-      document.getElementById('dia_visita').value = 'Lunes';
-      showToast('Cliente agregado');
+      try {
+        setLoading(true, "Guardando cliente...");
+        const clients = await apiPost({
+          action: "add",
+          client: newClient
+        });
+
+        state.clients = sortAndRecalculateOrders((clients || []).map(normalizeClient));
+        saveCache();
+        renderAll(false);
+        e.target.reset();
+        document.getElementById("dia_visita").value = "1-Lunes";
+        showToast("Cliente agregado");
+      } catch (error) {
+        console.error(error);
+        showToast(error.message || "No se pudo agregar");
+      } finally {
+        setLoading(false);
+      }
     });
 
-    document.getElementById('editForm').addEventListener('submit', (e) => {
+    document.getElementById("editForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const updated = {
-        id: document.getElementById('edit_id').value,
-        codigo: document.getElementById('edit_codigo').value,
-        ruta: document.getElementById('edit_ruta').value,
-        dia_visita: document.getElementById('edit_dia_visita').value,
-        nombre_negocio: document.getElementById('edit_nombre_negocio').value,
-        direccion: document.getElementById('edit_direccion').value,
-        clasificacion: document.getElementById('edit_clasificacion').value
+        id: document.getElementById("edit_id").value,
+        codigo: document.getElementById("edit_codigo").value,
+        ruta: document.getElementById("edit_ruta").value,
+        dia_visita: document.getElementById("edit_dia_visita").value,
+        nombre_negocio: document.getElementById("edit_nombre_negocio").value,
+        direccion: document.getElementById("edit_direccion").value,
+        clasificacion: document.getElementById("edit_clasificacion").value
       };
 
       const error = validateClientForm(updated);
@@ -1395,36 +1441,40 @@
         return;
       }
 
-      state.clients = sortAndRecalculateOrders(state.clients.map(item => {
-        if (item.id !== updated.id) return item;
-        return normalizeClient({
-          ...item,
-          codigo: updated.codigo,
-          ruta: updated.ruta,
-          dia_visita: updated.dia_visita,
-          nombre_negocio: updated.nombre_negocio,
-          direccion: updated.direccion,
-          clasificacion: updated.clasificacion
+      try {
+        setLoading(true, "Actualizando cliente...");
+        const clients = await apiPost({
+          action: "update",
+          client: updated
         });
-      }));
 
-      renderAll();
-      closeModal('editModal');
-      showToast('Cliente actualizado');
+        state.clients = sortAndRecalculateOrders((clients || []).map(normalizeClient));
+        saveCache();
+        renderAll(false);
+        closeModal("editModal");
+        showToast("Cliente actualizado");
+      } catch (error) {
+        console.error(error);
+        showToast(error.message || "No se pudo actualizar");
+      } finally {
+        setLoading(false);
+      }
     });
 
-    document.getElementById('deleteClientBtn').addEventListener('click', () => {
-      const id = document.getElementById('edit_id').value;
+    document.getElementById("deleteClientBtn").addEventListener("click", async () => {
+      const id = document.getElementById("edit_id").value;
       if (!id) return;
-      deleteClient(id);
+      await deleteClient(id);
     });
 
-    document.getElementById('exportExcelBtn').addEventListener('click', () => {
+    document.getElementById("exportExcelBtn").addEventListener("click", () => {
       exportToExcel(state.clients);
     });
 
-    renderAll();
-    switchTab('registro');
+    renderAll(false);
+    switchTab("registro");
+    document.getElementById("dia_visita").value = "1-Lunes";
+    loadInitialData();
   </script>
 </body>
 </html>
