@@ -566,7 +566,6 @@
       <symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 3 3 3-3 3"/><path d="M4 11V9a3 3 0 0 1 3-3h13"/><path d="m7 21-3-3 3-3"/><path d="M20 13v2a3 3 0 0 1-3 3H4"/></symbol>
       <symbol id="i-store" viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0A2.7 2.7 0 0 0 20 9"/><path d="M5.5 12v8h13v-8"/></symbol>
       <symbol id="i-building" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/></symbol>
-      <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 4a1 1 0 0 1 1-1h7.6a1 1 0 0 1 .7.3l8.4 8.4a1 1 0 0 1 0 1.4l-7.6 7.6a1 1 0 0 1-1.4 0L3.3 12.3a1 1 0 0 1-.3-.7z"/><circle cx="8" cy="8" r="1.3"/></symbol>
       <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></symbol>
       <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></symbol>
       <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.2a3.2 3.2 0 0 1 0 5.6M18.5 20a6 6 0 0 0-3-5.2"/></symbol>
@@ -643,11 +642,6 @@
             <div class="field">
               <label for="direccion"><svg class="ico" aria-hidden="true"><use href="#i-building"/></svg>Dirección</label>
               <textarea class="textarea" id="direccion" name="direccion" placeholder="Dirección"></textarea>
-            </div>
-
-            <div class="field">
-              <label for="clasificacion"><svg class="ico" aria-hidden="true"><use href="#i-tag"/></svg>Clasificación PDV</label>
-              <input class="input" id="clasificacion" name="clasificacion" placeholder="Ej. A" />
             </div>
 
             <div class="info-box">
@@ -843,10 +837,6 @@
           <label for="edit_direccion"><svg class="ico" aria-hidden="true"><use href="#i-building"/></svg>Dirección</label>
           <textarea class="textarea" id="edit_direccion"></textarea>
         </div>
-        <div class="field">
-          <label for="edit_clasificacion"><svg class="ico" aria-hidden="true"><use href="#i-tag"/></svg>Clasificación PDV</label>
-          <input class="input" id="edit_clasificacion" />
-        </div>
         <div class="grid-2">
           <button class="btn btn-primary" type="submit"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Guardar</button>
           <button class="btn btn-danger" type="button" id="deleteClientBtn"><svg class="ico" aria-hidden="true"><use href="#i-trash"/></svg>Borrar</button>
@@ -937,7 +927,6 @@
         orden: Number(raw.orden || raw["Orden"] || raw.Orden || 0),
         nombre_negocio: normalizeText(raw.nombre_negocio || raw["Nombre Negocio"] || raw.Nombre_Negocio),
         direccion: normalizeText(raw.direccion || raw["Direccion"] || raw.Direccion),
-        clasificacion: normalizeText(raw.clasificacion || raw["Clasificacion PDV"] || raw.Clasificacion),
         promotora: normalizeText(raw.promotora || raw["Nombre promotora Visibilidad"] || raw.Promotora),
         createdAt: raw.createdAt || new Date().toISOString(),
         isNew: normalizeBoolean(raw.isNew)
@@ -1165,7 +1154,7 @@
           <h3 class="client-name">${escapeHtml(client.nombre_negocio)}</h3>
           <p class="client-meta">Código: ${escapeHtml(client.codigo)} · Centro: ${escapeHtml(client.centro)} · Agencia: ${escapeHtml(client.agencia)}</p>
           <p class="client-address">${escapeHtml(client.direccion)}</p>
-          <p class="client-class">Clasificación: ${escapeHtml(client.clasificacion)} · Promotora: ${escapeHtml(client.promotora)}</p>
+          <p class="client-class">Promotora: ${escapeHtml(client.promotora)}</p>
           <div class="client-actions">
             <button class="btn btn-secondary" onclick="openEditClient('${client.id}')"><svg class="ico" aria-hidden="true"><use href="#i-pencil"/></svg>Editar</button>
             <button class="btn btn-danger" onclick="deleteClient('${client.id}')"><svg class="ico" aria-hidden="true"><use href="#i-trash"/></svg>Borrar</button>
@@ -1229,7 +1218,6 @@
       if (!normalizeText(data.dia_visita)) return "Selecciona un día";
       if (!normalizeText(data.nombre_negocio)) return "Ingresa negocio";
       if (!normalizeText(data.direccion)) return "Ingresa dirección";
-      if (!normalizeText(data.clasificacion)) return "Ingresa clasificación";
       return "";
     }
 
@@ -1253,7 +1241,6 @@
       document.getElementById("edit_semana").value = client.semana;
       document.getElementById("edit_nombre_negocio").value = client.nombre_negocio;
       document.getElementById("edit_direccion").value = client.direccion;
-      document.getElementById("edit_clasificacion").value = client.clasificacion;
       openModal("editModal");
     }
     window.openEditClient = openEditClient;
@@ -1352,8 +1339,7 @@
         dia_visita: document.getElementById("dia_visita").value,
         semana: document.getElementById("semana").value,
         nombre_negocio: document.getElementById("nombre_negocio").value,
-        direccion: document.getElementById("direccion").value,
-        clasificacion: document.getElementById("clasificacion").value
+        direccion: document.getElementById("direccion").value
       };
 
       const error = validateClientForm(data);
@@ -1372,7 +1358,6 @@
         semana: data.semana,
         nombre_negocio: data.nombre_negocio,
         direccion: data.direccion,
-        clasificacion: data.clasificacion,
         promotora: state.userDefaults.promotora,
         orden: Number.MAX_SAFE_INTEGER
       };
@@ -1409,8 +1394,7 @@
         dia_visita: document.getElementById("edit_dia_visita").value,
         semana: document.getElementById("edit_semana").value,
         nombre_negocio: document.getElementById("edit_nombre_negocio").value,
-        direccion: document.getElementById("edit_direccion").value,
-        clasificacion: document.getElementById("edit_clasificacion").value
+        direccion: document.getElementById("edit_direccion").value
       };
 
       const error = validateClientForm(updated);
