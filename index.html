@@ -327,6 +327,15 @@
       box-shadow: none;
     }
 
+    .filters-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .filters-row .select { width: 100%; }
+    .summary-note { margin: 8px 0 0; font-size: 11px; color: var(--muted); }
+
     .stats { display: grid; gap: 12px; }
     .stat-box {
       background: var(--soft);
@@ -553,9 +562,17 @@
                   <option value="4-Jueves">4-Jueves</option>
                   <option value="5-Viernes">5-Viernes</option>
                   <option value="6-Sábado">6-Sábado</option>
-                  <option value="7-Domingo">7-Domingo</option>
                 </select>
               </div>
+            </div>
+
+            <div class="field">
+              <label for="semana">🔁 Frecuencia de visita</label>
+              <select class="select" id="semana" name="semana">
+                <option value="Cada semana">Cada semana</option>
+                <option value="Semana 1">Semana 1 (cada 15 días)</option>
+                <option value="Semana 2">Semana 2 (cada 15 días)</option>
+              </select>
             </div>
 
             <div class="field">
@@ -596,6 +613,23 @@
               <span class="search-icon">🔎</span>
               <input class="input" id="clientSearchInput" type="search" placeholder="Buscar por nombre, código o día" autocomplete="off" />
             </div>
+            <div class="filters-row">
+              <select class="select" id="dayFilter" aria-label="Filtrar por día">
+                <option value="todos">Todos los días</option>
+                <option value="1-Lunes">Lunes</option>
+                <option value="2-Martes">Martes</option>
+                <option value="3-Miércoles">Miércoles</option>
+                <option value="4-Jueves">Jueves</option>
+                <option value="5-Viernes">Viernes</option>
+                <option value="6-Sábado">Sábado</option>
+              </select>
+              <select class="select" id="weekFilter" aria-label="Filtrar por semana">
+                <option value="todas">Todas las semanas</option>
+                <option value="Semana 1">Semana 1</option>
+                <option value="Semana 2">Semana 2</option>
+                <option value="Cada semana">Solo cada semana</option>
+              </select>
+            </div>
             <div class="search-info" id="clientSearchInfo">Todos los clientes</div>
           </div>
 
@@ -626,6 +660,12 @@
             <div class="stat-box">
               <div class="stat-label">Por ruta</div>
               <div class="route-list" id="routeList"></div>
+            </div>
+
+            <div class="stat-box">
+              <div class="stat-label">Por día y semana</div>
+              <div class="route-list" id="dayWeekList"></div>
+              <p class="summary-note">S1 y S2 incluyen los clientes que se visitan cada semana.</p>
             </div>
           </div>
 
@@ -725,9 +765,16 @@
               <option value="4-Jueves">4-Jueves</option>
               <option value="5-Viernes">5-Viernes</option>
               <option value="6-Sábado">6-Sábado</option>
-              <option value="7-Domingo">7-Domingo</option>
             </select>
           </div>
+        </div>
+        <div class="field">
+          <label for="edit_semana">🔁 Frecuencia de visita</label>
+          <select class="select" id="edit_semana">
+            <option value="Cada semana">Cada semana</option>
+            <option value="Semana 1">Semana 1 (cada 15 días)</option>
+            <option value="Semana 2">Semana 2 (cada 15 días)</option>
+          </select>
         </div>
         <div class="field">
           <label for="edit_nombre_negocio">🏪 Nombre Negocio</label>
@@ -763,9 +810,10 @@
       "3-Miércoles",
       "4-Jueves",
       "5-Viernes",
-      "6-Sábado",
-      "7-Domingo"
+      "6-Sábado"
     ];
+
+    const SEMANAS = ["Cada semana", "Semana 1", "Semana 2"];
 
     const DEFAULT_USER = {
       centro: "",
@@ -785,7 +833,8 @@
       "Nombre_Negocio",
       "Direccion",
       "Clasificacion",
-      "Promotora"
+      "Promotora",
+      "Semana_visita"
     ];
 
     let state = {
@@ -794,6 +843,8 @@
       clients: [],
       editId: null,
       clientSearch: "",
+      dayFilter: "todos",
+      weekFilter: "todas",
       loading: false
     };
 
@@ -802,6 +853,9 @@
     const clientSearchInput = document.getElementById("clientSearchInput");
     const clientSearchInfo = document.getElementById("clientSearchInfo");
     const routeList = document.getElementById("routeList");
+    const dayWeekList = document.getElementById("dayWeekList");
+    const dayFilterEl = document.getElementById("dayFilter");
+    const weekFilterEl = document.getElementById("weekFilter");
     const totalClientesEl = document.getElementById("totalClientes");
     const nuevosMesEl = document.getElementById("nuevosMes");
     const addClientForm = document.getElementById("addClientForm");
@@ -820,6 +874,13 @@
       return value === true || String(value).toLowerCase() === "true" || String(value) === "1";
     }
 
+    function normalizeSemana(value) {
+      const t = normalizeText(value).toLowerCase();
+      if (t === "semana 1" || t === "1") return "Semana 1";
+      if (t === "semana 2" || t === "2") return "Semana 2";
+      return "Cada semana";
+    }
+
     function normalizeClient(raw) {
       return {
         id: raw.id || makeId(),
@@ -829,6 +890,7 @@
         distrito: normalizeText(raw.distrito || raw["Distrito"] || raw.Distrito),
         ruta: normalizeText(raw.ruta || raw["Ruta Actual"] || raw.Ruta),
         dia_visita: normalizeText(raw.dia_visita || raw["Dia visita"] || raw.Dia_visita),
+        semana: normalizeSemana(raw.semana || raw["Semana visita"] || raw.Semana_visita),
         orden: Number(raw.orden || raw["Orden"] || raw.Orden || 0),
         nombre_negocio: normalizeText(raw.nombre_negocio || raw["Nombre Negocio"] || raw.Nombre_Negocio),
         direccion: normalizeText(raw.direccion || raw["Direccion"] || raw.Direccion),
@@ -1000,16 +1062,26 @@
       document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
     }
 
+    function matchesWeek(client, filter) {
+      if (filter === "todas") return true;
+      if (filter === "Cada semana") return client.semana === "Cada semana";
+      return client.semana === filter || client.semana === "Cada semana";
+    }
+
     function getFilteredClients() {
       const term = normalizeText(state.clientSearch).toLowerCase();
-      if (!term) return state.clients;
 
       return state.clients.filter(client => {
+        if (state.dayFilter !== "todos" && normalizeText(client.dia_visita) !== state.dayFilter) return false;
+        if (!matchesWeek(client, state.weekFilter)) return false;
+        if (!term) return true;
+
         const nombre = normalizeText(client.nombre_negocio).toLowerCase();
         const codigo = normalizeText(client.codigo).toLowerCase();
         const dia = normalizeText(client.dia_visita).toLowerCase();
         const ruta = normalizeText(client.ruta).toLowerCase();
-        return nombre.includes(term) || codigo.includes(term) || dia.includes(term) || ruta.includes(term);
+        const semana = normalizeText(client.semana).toLowerCase();
+        return nombre.includes(term) || codigo.includes(term) || dia.includes(term) || ruta.includes(term) || semana.includes(term);
       });
     }
 
@@ -1023,10 +1095,14 @@
       const filteredClients = getFilteredClients();
       const term = normalizeText(state.clientSearch);
 
-      if (term) {
+      const hasFilters = state.dayFilter !== "todos" || state.weekFilter !== "todas";
+
+      if (term || hasFilters) {
+        const plural = filteredClients.length === 1 ? "" : "s";
+        const suffix = term ? ` para "${term}"` : "";
         clientSearchInfo.textContent = filteredClients.length
-          ? `${filteredClients.length} resultado${filteredClients.length === 1 ? "" : "s"} para "${term}"`
-          : `Sin resultados para "${term}"`;
+          ? `${filteredClients.length} resultado${plural}${suffix}`
+          : `Sin resultados${suffix}`;
       } else {
         clientSearchInfo.textContent = `${state.clients.length} cliente${state.clients.length === 1 ? "" : "s"} en total`;
       }
@@ -1042,6 +1118,7 @@
             <span class="pill">Ruta ${escapeHtml(client.ruta)}</span>
             <span class="pill">Orden ${client.orden}</span>
             <span class="pill">${escapeHtml(client.dia_visita)}</span>
+            <span class="pill">${escapeHtml(client.semana)}</span>
           </div>
           <h3 class="client-name">${escapeHtml(client.nombre_negocio)}</h3>
           <p class="client-meta">Código: ${escapeHtml(client.codigo)} · Centro: ${escapeHtml(client.centro)} · Agencia: ${escapeHtml(client.agencia)}</p>
@@ -1080,6 +1157,14 @@
       routeList.innerHTML = porRuta.length
         ? porRuta.map(([ruta, total]) => `<div class="route-item"><span>Ruta ${escapeHtml(ruta)}</span><strong>${total}</strong></div>`).join("")
         : `<p class="client-meta" style="margin:0;">Sin datos.</p>`;
+
+      dayWeekList.innerHTML = DAYS.map(day => {
+        const delDia = state.clients.filter(c => normalizeText(c.dia_visita) === day);
+        const s1 = delDia.filter(c => matchesWeek(c, "Semana 1")).length;
+        const s2 = delDia.filter(c => matchesWeek(c, "Semana 2")).length;
+        const nombreDia = day.split("-").slice(1).join("-");
+        return `<div class="route-item"><span>${escapeHtml(nombreDia)}</span><strong>S1: ${s1} · S2: ${s2}</strong></div>`;
+      }).join("");
     }
 
     function renderUserDefaults() {
@@ -1123,6 +1208,7 @@
       document.getElementById("edit_codigo").value = client.codigo;
       document.getElementById("edit_ruta").value = client.ruta;
       document.getElementById("edit_dia_visita").value = client.dia_visita;
+      document.getElementById("edit_semana").value = client.semana;
       document.getElementById("edit_nombre_negocio").value = client.nombre_negocio;
       document.getElementById("edit_direccion").value = client.direccion;
       document.getElementById("edit_clasificacion").value = client.clasificacion;
@@ -1184,6 +1270,9 @@
         const dayCompare = getDayIndex(a.dia_visita) - getDayIndex(b.dia_visita);
         if (dayCompare !== 0) return dayCompare;
 
+        const weekCompare = SEMANAS.indexOf(a.semana) - SEMANAS.indexOf(b.semana);
+        if (weekCompare !== 0) return weekCompare;
+
         const orderCompare = Number(a.orden || 0) - Number(b.orden || 0);
         if (orderCompare !== 0) return orderCompare;
 
@@ -1201,7 +1290,8 @@
         Nombre_Negocio: item.nombre_negocio,
         Direccion: item.direccion,
         Clasificacion: item.clasificacion,
-        Promotora: item.promotora
+        Promotora: item.promotora,
+        Semana_visita: item.semana
       }));
 
       const HEADER_LABELS = {
@@ -1215,7 +1305,8 @@
         Nombre_Negocio: "NOMBRE NEGOCIO",
         Direccion: "DIRECCION",
         Clasificacion: "CLASIFICACION PDV",
-        Promotora: "NOMBRE PROMOTORA VISIBILIDAD"
+        Promotora: "NOMBRE PROMOTORA VISIBILIDAD",
+        Semana_visita: "SEMANA VISITA"
       };
 
       const sheetData = [
@@ -1227,7 +1318,7 @@
       const workbook = XLSX.utils.book_new();
 
       const redColumns = new Set(["Codigo"]);
-      const centerColumns = new Set(["Codigo", "Centro", "Agencia", "Distrito", "Ruta", "Dia_visita", "Orden", "Clasificacion"]);
+      const centerColumns = new Set(["Codigo", "Centro", "Agencia", "Distrito", "Ruta", "Dia_visita", "Orden", "Clasificacion", "Semana_visita"]);
       const borderColor = "B7C3CC";
       const headerBlue = "B7D7E5";
       const headerRed = "FF1A12";
@@ -1340,6 +1431,16 @@
       renderClients();
     });
 
+    dayFilterEl.addEventListener("change", (e) => {
+      state.dayFilter = e.target.value;
+      renderClients();
+    });
+
+    weekFilterEl.addEventListener("change", (e) => {
+      state.weekFilter = e.target.value;
+      renderClients();
+    });
+
     document.getElementById("userForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -1376,6 +1477,7 @@
         codigo: document.getElementById("codigo").value,
         ruta: document.getElementById("ruta").value,
         dia_visita: document.getElementById("dia_visita").value,
+        semana: document.getElementById("semana").value,
         nombre_negocio: document.getElementById("nombre_negocio").value,
         direccion: document.getElementById("direccion").value,
         clasificacion: document.getElementById("clasificacion").value
@@ -1394,6 +1496,7 @@
         distrito: state.userDefaults.distrito,
         ruta: data.ruta,
         dia_visita: data.dia_visita,
+        semana: data.semana,
         nombre_negocio: data.nombre_negocio,
         direccion: data.direccion,
         clasificacion: data.clasificacion,
@@ -1413,6 +1516,7 @@
         renderAll(false);
         e.target.reset();
         document.getElementById("dia_visita").value = "1-Lunes";
+        document.getElementById("semana").value = "Cada semana";
         showToast("Cliente agregado");
       } catch (error) {
         console.error(error);
@@ -1430,6 +1534,7 @@
         codigo: document.getElementById("edit_codigo").value,
         ruta: document.getElementById("edit_ruta").value,
         dia_visita: document.getElementById("edit_dia_visita").value,
+        semana: document.getElementById("edit_semana").value,
         nombre_negocio: document.getElementById("edit_nombre_negocio").value,
         direccion: document.getElementById("edit_direccion").value,
         clasificacion: document.getElementById("edit_clasificacion").value
